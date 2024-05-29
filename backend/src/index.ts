@@ -1,4 +1,5 @@
-import { Hono } from 'hono'
+import { Hono } from "hono";
+import { db } from "@/drizzle/db";
 
 const app = new Hono()
 
