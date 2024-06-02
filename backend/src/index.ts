@@ -1,8 +1,9 @@
 import { Hono } from "hono";
-import { db } from "@/drizzle/db";
+import { cors } from "hono/cors";
 
 const app = new Hono()
 
+app.use(cors())
 app.get('/', (c) => {
   return c.text('Hello Hono!')
 })
