@@ -1,5 +1,5 @@
 {
-  "id": "79fee1c3-6cfc-4d6d-b876-7a3636eff9c5",
+  "id": "b238e3b3-e76e-48dd-81c9-eb17f5386c3c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "6",
   "dialect": "postgresql",
@@ -44,13 +44,21 @@
           "name": "hashed_password",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "avatar": {
           "name": "avatar",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
+        },
+        "user_role": {
+          "name": "user_role",
+          "type": "user_role",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'reader'"
         },
         "created_at": {
           "name": "created_at",
@@ -87,7 +95,16 @@
       }
     }
   },
-  "enums": {},
+  "enums": {
+    "public.user_role": {
+      "name": "user_role",
+      "schema": "public",
+      "values": [
+        "reader",
+        "author"
+      ]
+    }
+  },
   "schemas": {},
   "_meta": {
     "columns": {},

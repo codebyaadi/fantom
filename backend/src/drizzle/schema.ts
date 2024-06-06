@@ -1,4 +1,6 @@
-import { boolean, pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
+import { boolean, pgEnum, pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
+
+export const userType = pgEnum("user_role", ["reader", "author"]);
 
 export const users = pgTable("users", {
     id: uuid("id").primaryKey().defaultRandom(),
@@ -8,7 +10,7 @@ export const users = pgTable("users", {
     email_verified: boolean("email_verified").default(false).notNull(),
     hashed_password: varchar("hashed_password", { length: 255 }).notNull(),
     avatar: varchar("avatar", { length: 255 }),
-    
+    role: userType("user_role").default("reader").notNull(),
     created_at: timestamp("created_at").notNull().defaultNow(),
     updated_at: timestamp("updated_at").notNull().$onUpdate(() => new Date())
 });
