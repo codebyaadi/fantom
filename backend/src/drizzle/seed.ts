@@ -12,7 +12,7 @@ const seed_users: InsertUser[] = [
         "name": "Stefan Salvatore",
         "username": "therippah",
         "email": "therippah@gmail.com",
-        "hashed_password": "TheRipper123",
+        "hashedPassword": "TheRipper123",
         "avatar": getRandomProfileImg(),
         "role": "author",
     },
@@ -20,7 +20,7 @@ const seed_users: InsertUser[] = [
         "name": "Damon Salvatore",
         "username": "damn",
         "email": "damon@gmail.com",
-        "hashed_password": "THeLoanWolf",
+        "hashedPassword": "THeLoanWolf",
         "avatar": getRandomProfileImg(),
         "role": "author",
     }
@@ -31,7 +31,7 @@ const seed = async () => {
         console.log("Seeding database...");
 
         for (let user of seed_users) {
-            user.hashed_password = await hasher(user.hashed_password);
+            user.hashedPassword = await hasher(user.hashedPassword);
         }
 
         await db.insert(users).values(seed_users);

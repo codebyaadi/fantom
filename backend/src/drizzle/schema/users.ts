@@ -7,14 +7,13 @@ export const users = pgTable("users", {
     name: varchar("name", { length: 255 }).notNull(),
     username: varchar("username", { length: 25 }).notNull().unique(),
     email: varchar("email", { length: 255 }).notNull().unique(),
-    email_verified: boolean("email_verified").default(false).notNull(),
-    hashed_password: varchar("hashed_password", { length: 255 }).notNull(),
+    emailVerified: boolean("email_verified").default(false).notNull(),
+    hashedPassword: varchar("hashed_password", { length: 255 }).notNull(),
     avatar: varchar("avatar", { length: 255 }),
     role: userType("user_role").default("reader").notNull(),
-    created_at: timestamp("created_at").notNull().defaultNow(),
-    updated_at: timestamp("updated_at").notNull().$onUpdate(() => new Date())
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().$onUpdate(() => new Date())
 });
 
 export type InsertUser = typeof users.$inferInsert;
 export type SelectUser = typeof users.$inferSelect;
-

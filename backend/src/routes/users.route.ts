@@ -26,7 +26,7 @@ user.post("/add-user", signupValidator, async (c) => {
 
         await db
             .insert(users)
-            .values({ ...user, hashed_password: hashedPassword, avatar: imageUrl });
+            .values({ ...user, hashedPassword: hashedPassword, avatar: imageUrl });
         console.log(user);
         return c.text("Added user", 200);
     } catch (error) {
@@ -47,7 +47,7 @@ user.post("/login", loginValidator, async (c) => {
             return c.text("No user found with this ID", 401);
         }
 
-        const passMatch = await Bun.password.verify(password, user.hashed_password);
+        const passMatch = await Bun.password.verify(password, user.hashedPassword);
 
         if (!passMatch) {
             return c.text("Credentials are incorrect", 401);
