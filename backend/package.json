@@ -2,7 +2,7 @@
   "scripts": {
     "dev": "bun run --hot src/index.ts",
     "db:generate": "drizzle-kit generate",
-    "db:drop": " drizzle-kit drop",
+    "db:drop": "drizzle-kit drop",
     "db:migrate": "bun run src/drizzle/migrate.ts",
     "db:seed": "bun run src/drizzle/seed.ts"
   },

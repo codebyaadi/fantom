@@ -1,10 +1,19 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
+import { logger } from "hono/logger";
 import user from "@/routes/users.route";
 
-const app = new Hono()
+declare module "bun" {
+  interface Env {
+    DATABASE_URL: string;
+    JWT_SECRET: string;
+  }
+}
 
-app.use(cors())
+const app = new Hono();
+
+app.use(cors());
+app.use(logger());
 app.get('/', (c) => {
   return c.text('Hello Hono!')
 });

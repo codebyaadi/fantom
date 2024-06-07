@@ -1,12 +1,12 @@
 import { Hono } from "hono";
 import { sign } from "hono/jwt";
 import { eq, or } from "drizzle-orm";
+import { JWTPayload } from "hono/utils/jwt/types";
 
 import { db } from "@/drizzle/db";
 import { users } from "@/drizzle/schema";
 import { getRandomProfileImg } from "@/lib/utils";
 import { loginValidator, signupValidator } from "@/lib/validations/auth";
-import { JWTPayload } from "hono/utils/jwt/types";
 
 const user = new Hono();
 
@@ -15,7 +15,6 @@ user.post("/add-user", signupValidator, async (c) => {
         const user = c.req.valid("json");
         const hashedPassword = await Bun.password.hash(user.password);
         const imageUrl = getRandomProfileImg();
-
         const existingUser = await db.query.users.findFirst({
             where: or(eq(users.username, user.username), eq(users.email, user.email)),
         });
@@ -27,7 +26,7 @@ user.post("/add-user", signupValidator, async (c) => {
         await db
             .insert(users)
             .values({ ...user, hashedPassword: hashedPassword, avatar: imageUrl });
-        console.log(user);
+
         return c.text("Added user", 200);
     } catch (error) {
         console.error("Error Adding User: ", error);
@@ -38,7 +37,6 @@ user.post("/add-user", signupValidator, async (c) => {
 user.post("/login", loginValidator, async (c) => {
     try {
         const { identity, password } = c.req.valid("json");
-
         const user = await db.query.users.findFirst({
             where: or(eq(users.username, identity), eq(users.email, identity)),
         });
@@ -57,7 +55,6 @@ user.post("/login", loginValidator, async (c) => {
             userId: user.id,
             exp: Math.floor(Date.now() / 1000) + 5,
         };
-
         const token = await sign(payload, process.env.JWT_SECRET || "");
 
         return c.json({
