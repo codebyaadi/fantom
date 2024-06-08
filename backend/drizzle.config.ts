@@ -5,6 +5,6 @@ export default defineConfig({
     dbCredentials: {
         url: process.env.DATABASE_URL!,
     },
-    schema: "./src/drizzle/schema.ts",
+    schema: "./src/drizzle/schema/index.ts",
     out: "./src/drizzle/migrations"
 })
