@@ -2,7 +2,7 @@ import { generateEmbedding } from "@/lib/embeddings";
 import { db } from "../db";
 import { InsertProduct, products } from "../schema";
 
-const staticAuthorId = "ec73bbbb-f0e9-44e5-967c-2f125e6162f3";
+const staticAuthorId = "845ef89f-4fb8-4a64-a805-5aebf8c7e3bd";
 
 const productData: InsertProduct[] = [
     {

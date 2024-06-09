@@ -1,6 +1,6 @@
 const hfToken = process.env.HF_TOKEN;
 
-const embeddingUrl = "https://api-inference.huggingface.co/pipeline/feature-extraction/sentence-transformers/all-MiniLM-L6-v2";
+const embeddingUrl = "https://api-inference.huggingface.co/pipeline/feature-extraction/intfloat/e5-large-v2";
 
 interface Input {
     inputs: string;
@@ -11,6 +11,7 @@ type Response = number[]
 export const generateEmbedding = async (text: string): Promise<number[]> => {
     const headers = {
         Authorization: `Bearer ${hfToken}`,
+        'Content-Type': 'application/json'
     }
 
     const body: Input = {

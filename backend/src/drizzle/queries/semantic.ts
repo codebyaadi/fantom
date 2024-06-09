@@ -12,7 +12,7 @@ const findSimilarManga = async (description: string) => {
     return similarManhwa;
 }
 
-const descp = "hunters";
+const descp = "The monster";
 
 (async () => {
     try {

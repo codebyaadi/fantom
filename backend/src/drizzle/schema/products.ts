@@ -14,7 +14,7 @@ export const products = pgTable("products", {
     rating: integer("rating").notNull().default(0),
     type: productEnum("type").default("manga").notNull(),
     status: statusEnum("status").default("On going").notNull(),
-    embedding: vector('embedding', { dimensions: 384 }),
+    embedding: vector('embedding', { dimensions: 1024 }),
     authorId: uuid("author_id").references(() => users.id, { onDelete: "cascade" }).notNull(),
     categoryId: integer("category_id").references(() => categories.id, { onDelete: "cascade" }).notNull(),
     createdAt: timestamp("created_at").notNull().defaultNow(),
