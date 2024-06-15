@@ -31,4 +31,7 @@ export const sessions = pgTable("sessions", {
     id: varchar("id", {length: 255}).primaryKey(),
     userId: uuid("user_id").notNull().references(() => users.id),
     expiresAt: timestamp("expires_at").notNull()
-})
+});
+
+export type InsertSession = typeof sessions.$inferInsert;
+export type SelectSession = typeof sessions.$inferSelect;
