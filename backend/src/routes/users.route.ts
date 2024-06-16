@@ -1,12 +1,11 @@
 import { Hono } from "hono";
-import { sign } from "hono/jwt";
 import { eq, or } from "drizzle-orm";
-import { JWTPayload } from "hono/utils/jwt/types";
 
 import { db } from "@/drizzle/db";
 import { users } from "@/drizzle/schema";
 import { getRandomProfileImg } from "@/lib/utils";
 import { loginValidator, signupValidator } from "@/lib/validations/auth";
+import { lucia } from "@/lib/auth";
 
 const user = new Hono();
 
@@ -26,6 +25,18 @@ user.post("/add-user", signupValidator, async (c) => {
         await db
             .insert(users)
             .values({ ...user, hashedPassword: hashedPassword, avatar: imageUrl });
+
+        const newUser = await db.query.users.findFirst({
+            where: eq(users.email, user.email)
+        });
+
+        if (!newUser) {
+            throw new Error("User not found after insert")
+        }
+
+        const session = await lucia.createSession(newUser?.id, {});
+        const sessionCookie = lucia.createSessionCookie(session.id);
+        c.header("Set-Cookie", sessionCookie.serialize());
 
         return c.text("Added user", 200);
     } catch (error) {
@@ -51,20 +62,18 @@ user.post("/login", loginValidator, async (c) => {
             return c.text("Credentials are incorrect", 401);
         }
 
-        const payload: JWTPayload = {
-            userId: user.id,
-            exp: Math.floor(Date.now() / 1000) + 5,
-        };
-        const token = await sign(payload, process.env.JWT_SECRET || "");
+        const session = await lucia.createSession(user.id, {});
+        const sessionCookie = lucia.createSessionCookie(session.id);
+        c.header("Set-Cookie", sessionCookie.serialize());
 
         return c.json({
-            token,
             user: {
                 name: user.name,
                 email: user.email,
                 username: user.username,
                 avatar: user.avatar,
             },
+            message: "User logged in successfully"
         });
     } catch (error) { 
         console.error(error);
