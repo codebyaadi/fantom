@@ -1,20 +1,10 @@
-import { lucia } from "@/lib/auth";
-import { Hono } from "hono";
 import { getCookie } from "hono/cookie";
-import { csrf } from "hono/csrf";
+import { createMiddleware } from "hono/factory";
 
-import type { User, Session } from "lucia";
+import { lucia } from "@/lib/auth";
 
-const app = new Hono<{
-    Variables: {
-        user: User | null;
-        session: Session | null;
-    }
-}>();
-
-app.use(csrf());
-
-app.use("*", async (c, next) => {
+export const authMiddleware = createMiddleware(async (c, next) => {
+    console.log("middleware exec")
     const sessionId = getCookie(c, lucia.sessionCookieName) ?? null;
     if (!sessionId) {
         c.set("user", null);

@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS "products" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" varchar(128) NOT NULL,
 	"description" varchar(1024) NOT NULL,
+	"cover_img" text,
 	"price" integer NOT NULL,
 	"rating" integer DEFAULT 0 NOT NULL,
 	"type" "product_type" DEFAULT 'manga' NOT NULL,
@@ -65,6 +66,16 @@ CREATE TABLE IF NOT EXISTS "product_categories" (
 	CONSTRAINT "product_category_pk" PRIMARY KEY("product_id","category_id")
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "chapters" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"product_id" integer,
+	"title" varchar(255) NOT NULL,
+	"chapter_number" integer NOT NULL,
+	"image_urls" text[] NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp NOT NULL
+);
+--> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "sessions" ADD CONSTRAINT "sessions_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
@@ -85,6 +96,12 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "product_categories" ADD CONSTRAINT "product_categories_category_id_categories_id_fk" FOREIGN KEY ("category_id") REFERENCES "public"."categories"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "chapters" ADD CONSTRAINT "chapters_product_id_products_id_fk" FOREIGN KEY ("product_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

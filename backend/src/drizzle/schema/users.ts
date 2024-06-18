@@ -28,9 +28,11 @@ export type InsertUser = typeof users.$inferInsert;
 export type SelectUser = typeof users.$inferSelect;
 
 export const sessions = pgTable("sessions", {
-    id: varchar("id", {length: 255}).primaryKey(),
-    userId: uuid("user_id").notNull().references(() => users.id),
-    expiresAt: timestamp("expires_at").notNull()
+    id: varchar("id", { length: 255 }).primaryKey(),
+    userId: uuid("user_id")
+        .notNull()
+        .references(() => users.id),
+    expiresAt: timestamp("expires_at").notNull(),
 });
 
 export type InsertSession = typeof sessions.$inferInsert;

@@ -1,7 +1,7 @@
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
 
-export const signupSchema = z.object({
+export const signUpSchema = z.object({
     name: z.string().min(1, "Name is required").max(50, "Name is too long"),
     username: z
         .string()
@@ -12,7 +12,7 @@ export const signupSchema = z.object({
     password: z.string().min(8, "Password must be 8 char long"),
 });
 
-export const signupValidator = zValidator("json", signupSchema, (result, c) => {
+export const signUpValidator = zValidator("json", signUpSchema, (result, c) => {
     if (!result.success) {
         const errors = result.error.errors
             .map((err) => `${err.path[0]}: ${err.message}`)
@@ -21,12 +21,12 @@ export const signupValidator = zValidator("json", signupSchema, (result, c) => {
     }
 });
 
-export const loginSchema = z.object({
+export const logInSchema = z.object({
     identity: z.string().min(1, "Username or email is required").max(50, "Username or email is too long"),
     password: z.string().min(8, "Password must be 8 characters long")
 });
 
-export const loginValidator = zValidator("json", loginSchema, (result, c) => {
+export const logInValidator = zValidator("json", logInSchema, (result, c) => {
     if (!result.success) {
         const errors = result.error.errors.map(err => `${err.path[0]}: ${err.message}`).join(", ");
         return c.text(`Invalid: ${errors}`, 400);

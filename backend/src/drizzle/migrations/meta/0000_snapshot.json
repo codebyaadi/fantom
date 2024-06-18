@@ -1,5 +1,5 @@
 {
-  "id": "371ad964-b5b2-4d0c-baac-97b66e66f783",
+  "id": "b13d6939-222b-4938-98e3-66eb84f3ce41",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -157,6 +157,12 @@
           "type": "varchar(1024)",
           "primaryKey": false,
           "notNull": true
+        },
+        "cover_img": {
+          "name": "cover_img",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "price": {
           "name": "price",
@@ -384,6 +390,73 @@
           ]
         }
       },
+      "uniqueConstraints": {}
+    },
+    "public.chapters": {
+      "name": "chapters",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "product_id": {
+          "name": "product_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "chapter_number": {
+          "name": "chapter_number",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "image_urls": {
+          "name": "image_urls",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "chapters_product_id_products_id_fk": {
+          "name": "chapters_product_id_products_id_fk",
+          "tableFrom": "chapters",
+          "tableTo": "products",
+          "columnsFrom": [
+            "product_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     }
   },

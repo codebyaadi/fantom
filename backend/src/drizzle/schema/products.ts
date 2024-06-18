@@ -4,6 +4,7 @@ import {
     pgEnum,
     pgTable,
     serial,
+    text,
     timestamp,
     uuid,
     varchar,
@@ -12,6 +13,7 @@ import {
 import { relations } from "drizzle-orm";
 import { users } from "./users";
 import { productCategories } from "./categories";
+import { chapters } from "./chapters";
 
 export const productEnum = pgEnum("product_type", [
     "manga",
@@ -31,6 +33,7 @@ export const products = pgTable(
         id: serial("id").primaryKey(),
         title: varchar("name", { length: 128 }).notNull(),
         description: varchar("description", { length: 1024 }).notNull(),
+        coverImg: text("cover_img"),
         price: integer("price").notNull(),
         rating: integer("rating").notNull().default(0),
         type: productEnum("type").default("manga").notNull(),
@@ -57,7 +60,8 @@ export const products = pgTable(
 
 export const productsRelations = relations(products, ({ one, many }) => ({
     author: one(users, { fields: [products.authorId], references: [users.id] }),
-    category: many(productCategories, { relationName: "productCategories" }),
+    categories: many(productCategories, { relationName: "productCategories" }),
+    chapters: many(chapters, { relationName: "productChapters" })
 }));
 
 export type InsertProduct = typeof products.$inferInsert;
