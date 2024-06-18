@@ -6,6 +6,7 @@ import { v2 as cloudinary } from "cloudinary";
 import { db } from "@/drizzle/db";
 import { categories, productCategories, products, users } from "@/drizzle/schema";
 import { productValidator } from "@/lib/validations/product";
+import { santizeFileFolderName } from "@/lib/utils";
 
 const product = new Hono<{
     Variables: {
@@ -34,9 +35,14 @@ product.post("/upload-product", productValidator, async (c) => {
             const mimeType = productData.image.type;
             const imageData = await productData.image.arrayBuffer();
             const base64Image = Buffer.from(imageData).toString('base64');
-            const uploadImage = cloudinary.uploader.upload(`data:${mimeType};base64,${base64Image}`);
-            imageUrl = (await uploadImage).url
-            console.log("Image: ", imageUrl);
+
+            const sanitizedTitle = santizeFileFolderName(productData.title);
+
+            const uploadImage = await cloudinary.uploader.upload(`data:${mimeType};base64,${base64Image}`, {
+                public_id: "cover-img",
+                folder: sanitizedTitle,
+            });
+            imageUrl = uploadImage.secure_url
         }
 
         const newProduct = await db.insert(products).values({
@@ -71,20 +77,6 @@ product.post("/upload-product", productValidator, async (c) => {
             );
         }
         return c.text("Product added successfully", 200);
-    } catch (error) {
-        console.error(error);
-        return c.text("Internal Server Error", 500);
-    }
-});
-
-product.post("/upload-temp", productValidator, async (c) => {
-    try {
-        const productData = c.req.valid("form");
-        const mimeType = productData.image?.type;
-        console.log("Prod. Data: ", productData);
-        console.log("Path: ", productData.image?.type)
-
-        return c.text("Product added successfull", 200)
     } catch (error) {
         console.error(error);
         return c.text("Internal Server Error", 500);

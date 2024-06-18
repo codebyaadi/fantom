@@ -35,3 +35,6 @@ export const getRandomProfileImg = (): string => {
         ];
     return `https://api.dicebear.com/6.x/${collection}/svg?seed=${name}`;
 };
+
+export const santizeFileFolderName = (name: string) =>
+    name.replace(/[^a-zA-Z0-9]/g, "-").toLowerCase();
