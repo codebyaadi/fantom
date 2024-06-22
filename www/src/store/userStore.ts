@@ -17,26 +17,12 @@ interface AuthState {
     logout: () => void;
 }
 
-const getInitialState = (): AuthState => {
-    if (typeof window !== "undefined") {
-        const storedState = localStorage.getItem("auth-storage");
-        if (storedState) {
-            return JSON.parse(storedState).state;
-        }
-    }
-    return {
-        user: null,
-        isLoading: false,
-        error: null,
-        login: async () => {},
-        logout: () => {}
-    };
-};
-
 const useAuthStore = create<AuthState>()(
     persist(
         (set) => ({
-            ...getInitialState(),
+            user: null,
+            isLoading: false,
+            error: null,
             login: async (identity, password) => {
                 try {
                     set({ isLoading: true, error: null });
@@ -54,7 +40,6 @@ const useAuthStore = create<AuthState>()(
         }),
         {
             name: "auth-storage",
-            storage: createJSONStorage(() => localStorage),
             partialize: (state) => ({ user: state.user})
         }
     )

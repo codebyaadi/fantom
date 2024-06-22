@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 import { fontPrompt, fontUnbounded } from "@/lib/fonts";
 import { Toaster } from "@/components/ui/sonner";
+import Hydrated from "@/store/hydration";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,7 +29,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <Hydrated>
+            {children}
+          </Hydrated>
         <Toaster />
         </ThemeProvider>
       </body>
