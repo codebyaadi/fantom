@@ -1,6 +1,7 @@
-import axios from "axios";
 import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
+import { persist } from "zustand/middleware";
+
+import { axiosInstance } from "@/config/axios";
 
 interface User {
     name: string;
@@ -26,7 +27,7 @@ const useAuthStore = create<AuthState>()(
             login: async (identity, password) => {
                 try {
                     set({ isLoading: true, error: null });
-                    const response = await axios.post("http://localhost:3000/login", { identity, password });
+                    const response = await axiosInstance.post("/login", { identity, password });
                     if (response.status === 200) {
                         set({ user: response.data.user, isLoading: false });
                     } else {
