@@ -2,6 +2,9 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="flex flex-col justify-center items-center text-center">
+        <span>
+          
+        </span>
         <h1 className="font-unbounded font-medium tracking-wide text-4xl">
         Dive into a World of Stories
         </h1>

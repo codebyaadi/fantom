@@ -45,37 +45,40 @@ product.post("/upload-product", productValidator, async (c) => {
             imageUrl = uploadImage.secure_url
         }
 
-        const newProduct = await db.insert(products).values({
-            ...productData,
-            coverImg: imageUrl,
-            authorId: user?.id as string,
-        }).returning({ id: products.id });
+        await db.transaction(async (tx) => {
+            const newProduct = await tx.insert(products).values({
+                ...productData,
+                coverImg: imageUrl,
+                authorId: user?.id as string
+            }).returning({ id: products.id});
 
-        if (productData.categories && productData.categories.length > 0) {
-            const categoryIds = await Promise.all(
-                productData.categories.map(async (categoryName: string) => {
-                    let category = await db.query.categories.findFirst({
-                        where: eq(categories.name, categoryName)
-                    });
+            if (productData.categories && productData.categories.length > 0) {
+                const categoryIds = await Promise.all(
+                    productData.categories.map(async (categoryName: string) => {
+                        let category = await tx.query.categories.findFirst({
+                            where: eq(categories.name, categoryName)
+                        });
 
-                    if (!category) {
-                        const newCategory = await db.insert(categories).values({
-                            name: categoryName
-                        }).returning();
-                        category = newCategory[0];
-                    }
+                        if (!category) {
+                            const newCategory = await tx.insert(categories).values({
+                                name: categoryName
+                            }).returning();
+                            category = newCategory[0];
+                        }
 
-                    return category.id
-                })
-            );
+                        return category.id
+                    })
+                );
 
-            await db.insert(productCategories).values(
-                categoryIds.map((categoryId) => ({
-                    productId: newProduct[0].id,
-                    categoryId: categoryId,
-                }))
-            );
-        }
+                await tx.insert(productCategories).values(
+                    categoryIds.map((categoryId: number) => ({
+                        productId: newProduct[0].id,
+                        categoryId: categoryId
+                    }))
+                )
+            }
+        });
+
         return c.text("Product added successfully", 200);
     } catch (error) {
         console.error(error);
