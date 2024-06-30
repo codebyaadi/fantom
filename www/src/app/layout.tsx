@@ -22,17 +22,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn("min-h-screen bg-background", fontUnbounded.variable, fontPrompt.variable)}>
+      <body
+        className={cn(
+          "min-h-screen bg-background antialiased",
+          fontUnbounded.variable,
+          fontPrompt.variable,
+        )}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <Hydrated>
-            {children}
-          </Hydrated>
-        <Toaster />
+          <Hydrated>{children}</Hydrated>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

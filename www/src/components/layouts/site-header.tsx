@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React from "react";
 import { useRouter } from "next/navigation";
@@ -14,9 +14,9 @@ export const SiteHeader = () => {
   const { user } = useAuthStore();
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background">
-      <div className="container h-16 flex items-center">
+      <div className="container flex h-16 items-center">
         <MainNav />
-        <div className="flex flex-1 justify-end items-center space-x-3">
+        <div className="flex flex-1 items-center justify-end space-x-3">
           <ModeToggle />
           {user ? (
             <UserButton name={user.name} avatar={user.avatar} />
@@ -40,5 +40,5 @@ export const SiteHeader = () => {
         </div>
       </div>
     </header>
-  )
-}
+  );
+};
