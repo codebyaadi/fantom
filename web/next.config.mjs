@@ -1,5 +1,5 @@
-import { fileURLToPath } from 'url';
-import createJITI from 'jiti';
+import { fileURLToPath } from "url";
+import createJITI from "jiti";
 const jiti = createJITI(fileURLToPath(import.meta.url));
 
 jiti("./src/env/client.ts");

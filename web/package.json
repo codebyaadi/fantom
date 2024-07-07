@@ -8,7 +8,10 @@
     "start": "next start",
     "lint": "next lint",
     "format:check": "prettier --check --ignore-path .gitignore .",
-    "format:write": "prettier --write --ignore-path .gitignore ."
+    "format:write": "prettier --write --ignore-path .gitignore .",
+    "db:generate": "drizzle-kit generate",
+    "db:drop": "drizzle-kit drop",
+    "db:migrate": "bun run src/db/migrate.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.9.4",
