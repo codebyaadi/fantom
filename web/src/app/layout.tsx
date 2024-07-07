@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+import { ThemeProvider } from "@/components/theme-provider";
+import { fontPrompt, fontUnbounded } from "@/lib/fonts";
+import { cn } from "@/lib/utils";
+import { Hydrated } from "@/store/hydration";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +18,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body
+        className={cn(
+          "min-h-screen bg-background antialiased",
+          fontUnbounded.variable,
+          fontPrompt.variable,
+        )}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Hydrated>{children}</Hydrated>
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
