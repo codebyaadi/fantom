@@ -4,6 +4,7 @@
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
 import Link from "next/link";
+import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -14,27 +15,27 @@ export const ProductCard = ({
 }: {
   image: string;
   title: string;
-  price: string;
+  price: number;
 }) => {
   return (
-    <Card className="w-full max-w-sm overflow-hidden rounded-lg shadow-lg transition-transform duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl">
+    <Card className="w-full max-w-sm overflow-hidden rounded-lg">
       <Link href="#" className="block" prefetch={false}>
-        <img
-          src="/placeholder.svg"
+        <Image
+          src={image}
           alt="Product Image"
           width={500}
           height={400}
-          className="h-64 w-full object-cover"
+          className="h-64 w-full object-cover object-top"
         />
       </Link>
       <div className="bg-background p-4">
         <div className="mb-2">
-          <h3 className="text-xl font-bold">Acme Wireless Headphones</h3>
+          <h3 className="text-xl font-bold line-clamp-1">{title}</h3>
           <p className="text-muted-foreground">Premium sound quality</p>
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-2xl font-bold">$99.99</span>
-          <Button size="sm">Buy Now</Button>
+          <span className="text-2xl font-bold">${price}</span>
+          <Button size="sm" className="rounded-full">Buy Now</Button>
         </div>
       </div>
     </Card>

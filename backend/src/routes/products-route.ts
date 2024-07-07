@@ -8,7 +8,7 @@ import { categories, productCategories, products, users } from "@/drizzle/schema
 import { partialProductValidator, productValidator } from "@/lib/validations/product";
 import { santizeFileFolderName } from "@/lib/utils";
 import { ProductTypes } from "@/types";
-import { fetchAllProductsHandler } from "@/controllers/products.controller";
+import { fetchAllProductsHandler } from "@/handlers/products-handler";
 
 const product = new Hono<{
     Variables: {

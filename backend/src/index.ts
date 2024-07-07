@@ -4,9 +4,9 @@ import { logger } from "hono/logger";
 import { csrf } from "hono/csrf";
 import { Session, User } from "lucia";
 
-import user from "@/routes/users.route";
-import product from "@/routes/products.route";
-import { authMiddleware } from "./middleware";
+import user from "@/routes/users-route";
+import product from "@/routes/products-route";
+import { authMiddleware } from "@/middleware";
 
 declare module "bun" {
   interface Env {

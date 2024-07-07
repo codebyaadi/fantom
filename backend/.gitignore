@@ -3,3 +3,4 @@ node_modules/
 
 # enviroment fils
 .env 
+test.ts

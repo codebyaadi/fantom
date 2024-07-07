@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 
-import { logInHandler, signUpHandler } from "@/controllers/users.controller";
+import { logInHandler, signUpHandler } from "@/handlers/users-handler";
 
 const user = new Hono();
 

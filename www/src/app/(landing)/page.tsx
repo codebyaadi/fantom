@@ -1,6 +1,8 @@
+import ShowProduct from "./_components/show-products";
+
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between pt-32">
+    <main className="flex min-h-screen flex-col items-center justify-between pt-32 mx-8">
       <div className="flex flex-col items-center justify-center text-center">
         <span></span>
         <h1 className="font-unbounded text-4xl font-medium tracking-wide">
@@ -11,6 +13,7 @@ export default function Home() {
           genres, join discussions, and share your favorites with the community.
         </p>
       </div>
+      <ShowProduct />
     </main>
   );
 }

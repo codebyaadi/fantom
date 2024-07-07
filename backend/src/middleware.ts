@@ -4,7 +4,7 @@ import { createMiddleware } from "hono/factory";
 import { lucia } from "@/lib/auth";
 
 export const authMiddleware = createMiddleware(async (c, next) => {
-    console.log("middleware exec")
+    console.log("middleware exec");
     const sessionId = getCookie(c, lucia.sessionCookieName) ?? null;
     if (!sessionId) {
         c.set("user", null);
