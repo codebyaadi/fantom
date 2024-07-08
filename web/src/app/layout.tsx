@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { fontPrompt, fontUnbounded } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 import { Hydrated } from "@/store/hydration";
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -32,6 +33,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Hydrated>{children}</Hydrated>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

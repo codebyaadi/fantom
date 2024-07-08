@@ -1,5 +1,5 @@
 import { migrate } from "drizzle-orm/neon-http/migrator";
-import db from ".";
+import { db } from ".";
 
 const main = async () => {
   try {
@@ -8,7 +8,7 @@ const main = async () => {
     const start = Date.now();
 
     await migrate(db, { migrationsFolder: "drizzle" });
-    
+
     const end = Date.now();
 
     console.log(`✅ Migrations completed in ${end - start}ms`);
