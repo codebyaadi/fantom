@@ -17,32 +17,22 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { signUpSchema } from "@/lib/validation/auth";
+import { register } from "@/server/auth/register";
 
-const formSchema = z.object({
-  name: z.string().min(1, "Name is required").max(50, "Name is too long"),
-  username: z
-    .string()
-    .trim()
-    .min(1, "Username is required")
-    .max(50, "Username is too long"),
-  email: z
-    .string()
-    .trim()
-    .email("Invalid email address")
-    .max(50, "Email is too long"),
-  password: z.string().min(8, "Password must be 8 char long"),
-});
-
-type InputType = z.infer<typeof formSchema>;
+type InputType = z.infer<typeof signUpSchema>;
 
 const SignUp = () => {
-  const form = useForm<InputType>({ resolver: zodResolver(formSchema) });
+  const form = useForm<InputType>({ resolver: zodResolver(signUpSchema) });
   const router = useRouter();
 
   const onSubmit = async (data: InputType) => {
     try {
-      toast("User added successfully");
-      router.push("/signin");
+      const res = await register(data);
+      if (res.success) {
+        toast("User added successfully");
+        router.push("/signin");
+      }
     } catch (error) {
       console.error("Error adding user: ", error);
       toast("Internal Server Error");
