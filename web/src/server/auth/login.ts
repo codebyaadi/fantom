@@ -15,23 +15,23 @@ export async function login(formData: z.infer<typeof logInSchema>) {
     const parsed = logInSchema.parse(formData);
     const { identity, password } = parsed;
     const user = await db.query.users.findFirst({
-      where: or(eq(users.username, identity), eq(users.email, identity))
+      where: or(eq(users.username, identity), eq(users.email, identity)),
     });
 
     if (!user) {
       return {
         success: false,
-        message: "No user found with this ID"
-      }
+        message: "No user found with this ID",
+      };
     }
 
     const passMatch = await argon2.verify(user.hashedPassword, password);
 
-    if(!passMatch) {
+    if (!passMatch) {
       return {
         success: false,
-        message: "Credentials are incorrect"
-      }
+        message: "Credentials are incorrect",
+      };
     }
 
     const session = await lucia.createSession(user.id, {});
@@ -42,6 +42,10 @@ export async function login(formData: z.infer<typeof logInSchema>) {
       sessionCookie.attributes,
     );
   } catch (error) {
-    
+    console.error(error);
+    return {
+      success: false,
+      message: "Something  went wrong",
+    };
   }
 }

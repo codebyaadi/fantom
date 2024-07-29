@@ -22,7 +22,10 @@ export async function register(formData: z.infer<typeof signUpSchema>) {
     });
 
     if (existingUser) {
-      throw new Error("Email or username already exist");
+      return {
+        success: false,
+        message: "User already exist",
+      };
     }
 
     await db.insert(users).values({
@@ -51,8 +54,8 @@ export async function register(formData: z.infer<typeof signUpSchema>) {
 
     return {
       message: "You're Sign Up successfully",
-      success: true
-    }
+      success: true,
+    };
   } catch (error) {
     console.log(error);
     throw new Error("Internal Server Error");
