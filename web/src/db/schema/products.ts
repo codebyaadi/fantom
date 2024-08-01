@@ -10,7 +10,10 @@ import {
   varchar,
   vector,
 } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
+
 import { users } from "./users";
+import { productCategories } from "./categories";
 
 export const productEnum = pgEnum("product_type", [
   "manga",
@@ -53,3 +56,8 @@ export const products = pgTable(
     authorIdIdx: index("authorIdIdx").on(t.authorId),
   }),
 );
+
+export const productsRelations = relations(products, ({ one, many }) => ({
+  author: one(users, { fields: [products.authorId], references: [users.id] }),
+  productCategories: many(productCategories),
+}));
