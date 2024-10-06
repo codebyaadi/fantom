@@ -48,31 +48,27 @@ interface ExploreCardProps {
 const ExploreCards: React.FC<ExploreCardProps> = ({ id, name, src }) => {
   return (
     <div key={id} className="relative overflow-hidden rounded">
-      <div className="relative w-full h-80">
-        <Image 
-          src={src} 
-          alt={name} 
-          layout="fill"
-          objectFit="cover"
-        />
+      <div className="relative h-80 w-full">
+        <Image src={src} alt={name} layout="fill" objectFit="cover" />
       </div>
       <div className="absolute bottom-4 z-10 flex w-full items-center justify-between px-4">
-        <div className='space-y-1'>
-          <h2 className="font-syne text-xl font-semibold leading-tight line-clamp-1">
+        <div className="space-y-1">
+          <h2 className="line-clamp-1 font-syne text-xl font-semibold leading-tight">
             {name}
           </h2>
-          <span className='flex justify-start items-center gap-1'>
+          <span className="flex items-center justify-start gap-1">
             <VerifiedBadge size={16} />
-            <p className='text-sm font-prompt'>godxsol</p>
+            <p className="font-prompt text-sm">godxsol</p>
           </span>
         </div>
-        <Button variant="rounded" className="font-prompt flex justify-center items-center">
-          <SolanaSVG size={16} className='mr-2' />
-          1 SOL
+        <Button
+          variant="rounded"
+          className="flex items-center justify-center font-prompt"
+        >
+          <SolanaSVG size={16} className="mr-2" />1 SOL
         </Button>
       </div>
-      <div className="absolute bottom-0 h-full w-full bg-gradient-to-t from-white/80 dark:from-black to-transparent"></div>
+      <div className="absolute bottom-0 h-full w-full bg-gradient-to-t from-white/80 to-transparent dark:from-black"></div>
     </div>
   );
 };
-

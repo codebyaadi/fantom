@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 interface SolanaSVGProps extends React.SVGProps<SVGSVGElement> {
   size?: number; // Allow scaling the SVG size
@@ -19,7 +19,7 @@ const SolanaSVG: React.FC<SolanaSVGProps> = ({ size = 24, ...props }) => (
   >
     <style type="text/css">
       {
-        "\n\t.st0{fill:url(#SVGID_1_);}\n\t.st1{fill:url(#SVGID_2_);}\n\t.st2{fill:url(#SVGID_3_);}\n"
+        '\n\t.st0{fill:url(#SVGID_1_);}\n\t.st1{fill:url(#SVGID_2_);}\n\t.st2{fill:url(#SVGID_3_);}\n'
       }
     </style>
     <linearGradient
@@ -34,13 +34,13 @@ const SolanaSVG: React.FC<SolanaSVGProps> = ({ size = 24, ...props }) => (
       <stop
         offset={0}
         style={{
-          stopColor: "#00FFA3",
+          stopColor: '#00FFA3',
         }}
       />
       <stop
         offset={1}
         style={{
-          stopColor: "#DC1FFF",
+          stopColor: '#DC1FFF',
         }}
       />
     </linearGradient>
@@ -60,13 +60,13 @@ const SolanaSVG: React.FC<SolanaSVGProps> = ({ size = 24, ...props }) => (
       <stop
         offset={0}
         style={{
-          stopColor: "#00FFA3",
+          stopColor: '#00FFA3',
         }}
       />
       <stop
         offset={1}
         style={{
-          stopColor: "#DC1FFF",
+          stopColor: '#DC1FFF',
         }}
       />
     </linearGradient>
@@ -86,13 +86,13 @@ const SolanaSVG: React.FC<SolanaSVGProps> = ({ size = 24, ...props }) => (
       <stop
         offset={0}
         style={{
-          stopColor: "#00FFA3",
+          stopColor: '#00FFA3',
         }}
       />
       <stop
         offset={1}
         style={{
-          stopColor: "#DC1FFF",
+          stopColor: '#DC1FFF',
         }}
       />
     </linearGradient>
