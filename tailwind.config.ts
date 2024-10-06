@@ -11,10 +11,13 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
+        syne: ['var(--font-syne)', ...fontFamily.sans],
+        prompt: ['var(--font-prompt)', ...fontFamily.mono],
         'giest-sans': ['var(--font-geist-sans)', ...fontFamily.sans],
         'giest-mono': ['var(--font-geist-mono)', ...fontFamily.mono],
       },
       colors: {
+        brand: '#7CE2FE',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
