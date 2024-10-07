@@ -4,17 +4,8 @@ import React from 'react';
 import { siteConfig } from '@/config/site';
 import { Button } from '@/components/ui/button';
 import { ModeToggle } from '@/components/mode-toggle';
-import { connectWallet } from '@/lib/wallet';
 
 const Navbar = () => {
-  const handleWalletConnect = async () => {
-    try {
-      const publicKey = await connectWallet();
-      console.log('publick key: ', publicKey);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <nav className="mx-4 my-2 md:mx-6 md:my-4 lg:mx-12 lg:my-5">
@@ -27,9 +18,9 @@ const Navbar = () => {
           <Button
             className="font-prompt shadow-none"
             variant="secondary"
-            onClick={handleWalletConnect}
+            onClick={() => {}}
           >
-            Connect Wallet
+            Log In
           </Button>
         </div>
       </div>

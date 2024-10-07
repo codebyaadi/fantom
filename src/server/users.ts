@@ -20,10 +20,8 @@ const userSchema = z.object({
 });
 
 export const storeUser = async (userData: z.infer<typeof userSchema>) => {
-    try {
-        const parsed = userSchema.parse(userData);
-        
-    } catch (error) {
-        
-    }
+  try {
+    const parsed = userSchema.parse(userData);
+    const { username, email, emailVerified, walletAddress, avatar } = parsed;
+  } catch (error) {}
 };
