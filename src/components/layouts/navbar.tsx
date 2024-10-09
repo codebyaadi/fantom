@@ -2,9 +2,7 @@
 
 import React from 'react';
 import { siteConfig } from '@/config/site';
-import { Button } from '@/components/ui/button';
 import { ModeToggle } from '@/components/mode-toggle';
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import WalletConnection from './wallet-connection';
 
 const Navbar = () => {
