@@ -27,7 +27,7 @@ const Explore = () => {
             Manhua
           </Button>
         </div>
-        <div className="mt-4 grid grid-cols-4 gap-4">
+        <div className="mt-4 flex flex-col items-center justify-center gap-4 md:grid md:grid-cols-3 lg:grid-cols-4">
           {trendingMs.map((m, idx) => (
             <ExploreCards id={idx.toString()} name={m.name} src={m.img} />
           ))}
@@ -47,7 +47,7 @@ interface ExploreCardProps {
 
 const ExploreCards: React.FC<ExploreCardProps> = ({ id, name, src }) => {
   return (
-    <div key={id} className="relative overflow-hidden rounded">
+    <div key={id} className="relative w-full overflow-hidden rounded">
       <div className="relative h-80 w-full">
         <Image src={src} alt={name} layout="fill" objectFit="cover" />
       </div>
