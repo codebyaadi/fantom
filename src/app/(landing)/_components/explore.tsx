@@ -49,7 +49,7 @@ const ExploreCards: React.FC<ExploreCardProps> = ({ id, name, src }) => {
   return (
     <div key={id} className="relative w-full overflow-hidden rounded">
       <div className="relative h-80 w-full">
-        <Image src={src} alt={name} layout="fill" objectFit="cover" />
+        <Image src={src} alt={name} fill style={{ objectFit: 'cover' }} />
       </div>
       <div className="absolute bottom-4 z-10 flex w-full items-center justify-between px-4">
         <div className="space-y-1">
