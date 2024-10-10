@@ -35,7 +35,7 @@ const WalletConnection = () => {
   useEffect(() => {
     const fetchBalanceAndStoreAddress = async () => {
       if (publicKey) {
-        const res = await storeWalletAddress(publicKey.toBase58())
+        const res = await storeWalletAddress(publicKey.toBase58());
         if (res.success) {
           const balance = await connection.getBalance(publicKey);
           setSolBalance(balance / LAMPORTS_PER_SOL);

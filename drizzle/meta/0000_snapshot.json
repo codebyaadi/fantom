@@ -67,23 +67,17 @@
         "users_username_unique": {
           "name": "users_username_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "username"
-          ]
+          "columns": ["username"]
         },
         "users_email_unique": {
           "name": "users_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         },
         "users_wallet_address_unique": {
           "name": "users_wallet_address_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "wallet_address"
-          ]
+          "columns": ["wallet_address"]
         }
       }
     }

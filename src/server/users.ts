@@ -5,8 +5,7 @@ import { userSchema } from '@/lib/validators';
 import { db } from '@/db';
 import { users } from '@/db/schema';
 
-export const 
-storeWalletAddress = async (walletAddress: string) => {
+export const storeWalletAddress = async (walletAddress: string) => {
   const walletValidation = userSchema.pick({ walletAddress: true });
 
   try {
