@@ -1,23 +1,48 @@
-import { z } from 'zod';
+'use server';
 
-const userSchema = z.object({
-  username: z
-    .string()
-    .trim()
-    .min(1, 'username is required')
-    .max(25, 'username is too long'),
-  email: z
-    .string()
-    .trim()
-    .email('invalid email address')
-    .max(50, 'email is too long'),
-  emailVerified: z.boolean(),
-  walletAddress: z
-    .string()
-    .min(32, 'solana wallet address is too short')
-    .max(44, 'solana wallet address is too long'),
-  avatar: z.string().url('invalid URL').optional(),
-});
+import z from 'zod';
+import { userSchema } from '@/lib/validators';
+import { db } from '@/db';
+import { users } from '@/db/schema';
+
+export const 
+storeWalletAddress = async (walletAddress: string) => {
+  const walletValidation = userSchema.pick({ walletAddress: true });
+
+  try {
+    const parsed = walletValidation.parse({ walletAddress });
+
+    const existingAddress = await db.query.users.findFirst({
+      where: (users, { eq }) => eq(users.walletAddress, parsed.walletAddress),
+    });
+
+    if (existingAddress) {
+      console.error('wallet address already exists');
+      return {
+        success: true,
+        message: 'wallet address already exists',
+        data: parsed.walletAddress,
+      };
+    }
+
+    await db.insert(users).values({
+      walletAddress: parsed.walletAddress,
+    });
+
+    return {
+      success: true,
+      message: 'wallet address stored successfully',
+      data: parsed.walletAddress,
+    };
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      console.log('validation error:', error.issues);
+      throw new Error('Validation failed');
+    }
+    console.error('error storing wallet address:', error);
+    throw new Error('An error occurred while storing the wallet address');
+  }
+};
 
 export const storeUser = async (userData: z.infer<typeof userSchema>) => {
   try {

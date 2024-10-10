@@ -11,7 +11,7 @@ export const users = pgTable('users', {
   username: varchar('username', { length: 25 }).unique(),
   email: varchar('email', { length: 320 }).unique(),
   emailVerified: boolean('email_verified').default(false),
-  walletAddress: varchar('wallet_address', { length: 42 }).notNull().unique(),
+  walletAddress: varchar('wallet_address', { length: 65 }).notNull().unique(),
   avatar: varchar('avatar', { length: 255 }),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at')

@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/providers/theme-provider';
 import { siteConfig } from '@/config/site';
 import { fontPrompt, fontSyne } from '@/config/fonts';
 import { AppWalletProvider } from '@/providers/app-wallet-provider';
+import { Toaster } from '@/components/ui/sonner';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -79,6 +80,7 @@ export default function RootLayout({
         >
           <AppWalletProvider>{children}</AppWalletProvider>
         </ThemeProvider>
+        <Toaster />
       </body>
     </html>
   );

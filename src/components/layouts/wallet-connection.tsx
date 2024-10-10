@@ -23,6 +23,8 @@ import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { WalletName } from '@solana/wallet-adapter-base';
 import { CopyIcon } from '@radix-ui/react-icons';
 import { LAMPORTS_PER_SOL } from '@solana/web3.js';
+import { storeWalletAddress } from '@/server/users';
+import { toast } from 'sonner';
 
 const WalletConnection = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -31,13 +33,19 @@ const WalletConnection = () => {
   const { select, wallets, publicKey, disconnect, connecting } = useWallet();
 
   useEffect(() => {
-    const fetchBalance = async () => {
+    const fetchBalanceAndStoreAddress = async () => {
       if (publicKey) {
-        const balance = await connection.getBalance(publicKey);
-        setSolBalance(balance / LAMPORTS_PER_SOL);
+        const res = await storeWalletAddress(publicKey.toBase58())
+        if (res.success) {
+          const balance = await connection.getBalance(publicKey);
+          setSolBalance(balance / LAMPORTS_PER_SOL);
+          toast.success(res.message);
+        } else {
+          console.error(res.message);
+        }
       }
     };
-    if (publicKey) fetchBalance();
+    if (publicKey) fetchBalanceAndStoreAddress();
   }, [publicKey, connection]);
 
   const handleWalletSelect = async (walletName: WalletName) => {
