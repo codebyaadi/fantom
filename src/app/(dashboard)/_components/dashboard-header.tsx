@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { siteConfig } from '@/config/site';
 import { ModeToggle } from '@/components/mode-toggle';
 import WalletConnection from '@/components/layouts/wallet-connection';
-import Link from 'next/link';
 
 const DashboardHeader = () => {
   return (

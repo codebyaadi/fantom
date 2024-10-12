@@ -2,102 +2,14 @@
 
 import Link from 'next/link';
 import React, { useState } from 'react';
-import {
-  GearIcon,
-  PersonIcon,
-  UploadIcon,
-  ChevronDownIcon,
-  DashboardIcon,
-  StackIcon,
-  GridIcon,
-  BarChartIcon,
-} from '@radix-ui/react-icons';
 import { usePathname } from 'next/navigation';
+import { ChevronDownIcon } from '@radix-ui/react-icons';
 import { cn } from '@/lib/utils';
-
-type NavLink = {
-  name: string;
-  href?: string;
-  icon?: React.ReactNode;
-  subItems?: NavLink[];
-};
-
-const navLinks: NavLink[] = [
-  {
-    name: 'Dashboard',
-    href: '/dashboard',
-    icon: <DashboardIcon />,
-  },
-  {
-    name: 'My Library',
-    icon: <StackIcon />,
-    subItems: [
-      {
-        name: 'Manga',
-        href: '/library/manga',
-      },
-      {
-        name: 'Manhwa',
-        href: '/library/manhwa',
-      },
-      {
-        name: 'Manhua',
-        href: '/library/manhua',
-      },
-    ],
-  },
-  {
-    name: 'Upload',
-    icon: <UploadIcon />,
-    subItems: [
-      {
-        name: 'New Series',
-        href: '/upload/new-series',
-      },
-      {
-        name: 'New Chapter',
-        href: '/upload/new-chapter',
-      },
-    ],
-  },
-  {
-    name: 'NFT Studio',
-    icon: <GridIcon />,
-    subItems: [
-      {
-        name: 'Create NFT',
-        href: '/nft/create',
-      },
-      {
-        name: 'My Collections',
-        href: '/nft/collections',
-      },
-      {
-        name: 'Marketplace',
-        href: '/nft/marketplace',
-      },
-    ],
-  },
-  {
-    name: 'Analytics',
-    href: '/analytics',
-    icon: <BarChartIcon />,
-  },
-  {
-    name: 'Profile',
-    href: '/profile',
-    icon: <PersonIcon />,
-  },
-  {
-    name: 'Settings',
-    href: '/settings',
-    icon: <GearIcon />,
-  },
-];
+import { NavLink, navLinks } from '../_constants/navlinks';
 
 const Sidebar = () => {
   return (
-    <div className="fixed left-0 h-screen w-64 border-r bg-background px-4 font-prompt">
+    <div className="fixed left-0 h-screen w-64 overflow-y-auto border-r bg-background px-4 font-prompt">
       <nav className="mt-16">
         {navLinks.map((link, idx) => (
           <SidebarLink key={idx} link={link} />
@@ -111,7 +23,7 @@ export default Sidebar;
 
 const SidebarLink: React.FC<{ link: NavLink; depth?: number }> = ({
   link,
-  depth = 0,
+  depth = 1,
 }) => {
   const pathname = usePathname();
   const [open, setOpen] = useState<boolean>(false);
