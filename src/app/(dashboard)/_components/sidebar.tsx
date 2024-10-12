@@ -4,17 +4,20 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import {
   GearIcon,
-  HomeIcon,
   PersonIcon,
   UploadIcon,
   ChevronDownIcon,
+  DashboardIcon,
+  StackIcon,
+  GridIcon,
+  BarChartIcon,
 } from '@radix-ui/react-icons';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
 type NavLink = {
   name: string;
-  href: string;
+  href?: string;
   icon?: React.ReactNode;
   subItems?: NavLink[];
 };
@@ -23,31 +26,71 @@ const navLinks: NavLink[] = [
   {
     name: 'Dashboard',
     href: '/dashboard',
-    icon: <HomeIcon />,
+    icon: <DashboardIcon />,
   },
   {
-    name: 'Profile',
-    href: '/dashboard/profil',
-    icon: <PersonIcon />,
-  },
-  {
-    name: 'Upload',
-    href: '/dashboard/profile',
-    icon: <UploadIcon />,
+    name: 'My Library',
+    icon: <StackIcon />,
     subItems: [
       {
-        name: 'Item 1',
-        href: '/dashboard/profil',
+        name: 'Manga',
+        href: '/library/manga',
       },
       {
-        name: 'Item 3',
-        href: '/dashboard/profil',
+        name: 'Manhwa',
+        href: '/library/manhwa',
+      },
+      {
+        name: 'Manhua',
+        href: '/library/manhua',
       },
     ],
   },
   {
+    name: 'Upload',
+    icon: <UploadIcon />,
+    subItems: [
+      {
+        name: 'New Series',
+        href: '/upload/new-series',
+      },
+      {
+        name: 'New Chapter',
+        href: '/upload/new-chapter',
+      },
+    ],
+  },
+  {
+    name: 'NFT Studio',
+    icon: <GridIcon />,
+    subItems: [
+      {
+        name: 'Create NFT',
+        href: '/nft/create',
+      },
+      {
+        name: 'My Collections',
+        href: '/nft/collections',
+      },
+      {
+        name: 'Marketplace',
+        href: '/nft/marketplace',
+      },
+    ],
+  },
+  {
+    name: 'Analytics',
+    href: '/analytics',
+    icon: <BarChartIcon />,
+  },
+  {
+    name: 'Profile',
+    href: '/profile',
+    icon: <PersonIcon />,
+  },
+  {
     name: 'Settings',
-    href: '/dashboard/settings',
+    href: '/settings',
     icon: <GearIcon />,
   },
 ];
@@ -92,8 +135,8 @@ const SidebarLink: React.FC<{ link: NavLink; depth?: number }> = ({
               {hasSubItems && (
                 <span
                   className={cn(
-                    'absolute left-1/2 mt-4 -translate-x-1/2 h-full border-l bg-muted-foreground transition-all',
-                    open ? 'h-64' : 'h-0'
+                    'absolute left-1/2 mt-4 h-full -translate-x-1/2 border-l bg-muted-foreground transition-all',
+                    open ? 'h-64' : 'h-0',
                   )}
                   style={{
                     top: 'calc(100%)',
@@ -111,7 +154,7 @@ const SidebarLink: React.FC<{ link: NavLink; depth?: number }> = ({
         )}
       </Link>
       {hasSubItems && open && (
-        <div className="ml-4 space-y-1">
+        <div className="ml-4">
           {link.subItems?.map((subLink, idx) => (
             <SidebarLink key={idx} link={subLink} depth={depth + 1} />
           ))}
