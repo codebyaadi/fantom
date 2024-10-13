@@ -37,12 +37,11 @@ const WalletConnection = () => {
       if (publicKey) {
         const res = await storeWalletAddress(publicKey.toBase58());
         if (res.success) {
-          const balance = await connection.getBalance(publicKey);
-          setSolBalance(balance / LAMPORTS_PER_SOL);
           toast.success(res.message);
-        } else {
-          console.error(res.message);
         }
+
+        const balance = await connection.getBalance(publicKey);
+        setSolBalance(balance / LAMPORTS_PER_SOL);
       }
     };
     if (publicKey) fetchBalanceAndStoreAddress();
@@ -60,7 +59,7 @@ const WalletConnection = () => {
   const handleCopyAddress = () => {
     if (publicKey) {
       navigator.clipboard.writeText(publicKey.toBase58());
-      alert('Address copied to clipboard!');
+      toast.success('Address copied to clipboard!');
     }
   };
 
