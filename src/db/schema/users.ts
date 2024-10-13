@@ -13,6 +13,9 @@ export const users = pgTable('users', {
   emailVerified: boolean('email_verified').default(false),
   walletAddress: varchar('wallet_address', { length: 65 }).notNull().unique(),
   avatar: varchar('avatar', { length: 255 }),
+  banner: varchar('banner', { length: 255 }),
+  bio: varchar('bio', { length: 255 }),
+  isVerified: boolean('is_verified').default(false),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at')
     .notNull()

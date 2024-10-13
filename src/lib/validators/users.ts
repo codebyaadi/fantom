@@ -17,4 +17,7 @@ export const userSchema = z.object({
     .min(32, 'solana wallet address is too short')
     .max(44, 'solana wallet address is too long'),
   avatar: z.string().url('invalid URL').optional(),
+  banner: z.string().url('invalid URL').optional(),
+  bio: z.string().max(255, 'bio is too long').optional(),
+  isVerified: z.boolean(),
 });
