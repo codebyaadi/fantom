@@ -4,6 +4,7 @@ import z from 'zod';
 import { userSchema } from '@/lib/validators';
 import { db } from '@/db';
 import { users } from '@/db/schema';
+import { avatarsArray } from '@/constants/avatars';
 
 export const storeWalletAddress = async (walletAddress: string) => {
   const walletValidation = userSchema.pick({ walletAddress: true });
@@ -18,14 +19,18 @@ export const storeWalletAddress = async (walletAddress: string) => {
     if (existingAddress) {
       console.error('wallet address already exists');
       return {
-        success: true,
+        success: false,
         message: 'wallet address already exists',
         data: parsed.walletAddress,
       };
     }
 
+    const avatar =
+      avatarsArray[Math.floor(Math.random() * avatarsArray.length)];
+
     await db.insert(users).values({
       walletAddress: parsed.walletAddress,
+      avatar: avatar,
     });
 
     return {
@@ -41,11 +46,4 @@ export const storeWalletAddress = async (walletAddress: string) => {
     console.error('error storing wallet address:', error);
     throw new Error('An error occurred while storing the wallet address');
   }
-};
-
-export const storeUser = async (userData: z.infer<typeof userSchema>) => {
-  try {
-    const parsed = userSchema.parse(userData);
-    const { username, email, emailVerified, walletAddress, avatar } = parsed;
-  } catch (error) {}
 };

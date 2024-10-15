@@ -10,15 +10,15 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '../ui/dialog';
-import { Button } from '../ui/button';
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from '../ui/dropdown-menu';
+} from '@/components/ui/dropdown-menu';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { WalletName } from '@solana/wallet-adapter-base';
 import { CopyIcon } from '@radix-ui/react-icons';
@@ -84,7 +84,7 @@ const WalletConnection = () => {
                 <button
                   key={w.adapter.name}
                   onClick={() => handleWalletSelect(w.adapter.name)}
-                  className="relative flex w-full scale-100 appearance-none items-center space-x-1.5 rounded-lg border border-gray-200 bg-transparent px-6 py-3 text-sm font-semibold transition-colors duration-150 hover:bg-gray-100 active:scale-[0.98] disabled:pointer-events-none dark:border-gray-800 dark:hover:bg-gray-800"
+                  className="relative flex w-full scale-100 appearance-none items-center space-x-1.5 rounded-xl bg-transparent px-6 py-3.5 text-sm font-semibold transition-colors duration-150 hover:bg-gray-100 active:scale-[0.98] disabled:pointer-events-none dark:hover:bg-gray-800"
                 >
                   <div className="flex">
                     <Image

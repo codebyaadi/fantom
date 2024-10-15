@@ -4,6 +4,9 @@ import { z } from 'zod';
 export const env = createEnv({
   server: {
     DATABASE_URL: z.string().url(),
+    CLOUDINARY_CLOUD_NAME: z.string(),
+    CLOUDINARY_API_KEY: z.string(),
+    CLOUDINARY_API_SECRET: z.string(),
   },
   runtimeEnv: process.env,
 });
