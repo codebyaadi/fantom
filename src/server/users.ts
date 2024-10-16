@@ -1,6 +1,6 @@
 'use server';
 
-import z from 'zod';
+import { z } from 'zod';
 import { userSchema } from '@/lib/validators';
 import { db } from '@/db';
 import { users } from '@/db/schema';
@@ -45,5 +45,36 @@ export const storeWalletAddress = async (walletAddress: string) => {
     }
     console.error('error storing wallet address:', error);
     throw new Error('An error occurred while storing the wallet address');
+  }
+};
+
+export const getUserInfo = async (walletAddress: string) => {
+  try {
+    if (!walletAddress) {
+      return {
+        success: false,
+        msg: 'wallet address is required',
+      };
+    }
+
+    const user = await db.query.users.findFirst({
+      where: (users, { eq }) => eq(users.walletAddress, walletAddress),
+    });
+
+    if (!user) {
+      return {
+        success: false,
+        msg: 'user not found',
+      };
+    }
+
+    return {
+      success: true,
+      msg: 'user found',
+      data: user,
+    };
+  } catch (error) {
+    console.error('error getting user info: ', error);
+    throw new Error('An error occurred while fetching user info');
   }
 };

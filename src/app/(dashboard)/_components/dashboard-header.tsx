@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { siteConfig } from '@/config/site';
 import { ModeToggle } from '@/components/mode-toggle';
-import WalletConnection from '@/components/layouts/wallet-connection';
+import WalletConnection from '@/components/common/wallet-connection';
 
 const DashboardHeader = () => {
   return (
