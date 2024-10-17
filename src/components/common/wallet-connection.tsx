@@ -23,14 +23,16 @@ import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { WalletName } from '@solana/wallet-adapter-base';
 import { CopyIcon } from '@radix-ui/react-icons';
 import { LAMPORTS_PER_SOL } from '@solana/web3.js';
-import { storeWalletAddress } from '@/server/users';
+import { getUserInfo, storeWalletAddress } from '@/server/users';
 import { toast } from 'sonner';
+import { useUserStore } from '@/store/user-store';
 
 const WalletConnection = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [solBalance, setSolBalance] = useState<number | null>(null);
   const { connection } = useConnection();
   const { select, wallets, publicKey, disconnect, connecting } = useWallet();
+  const {setUser, clearUser} = useUserStore();
 
   useEffect(() => {
     const fetchBalanceAndStoreAddress = async () => {
@@ -38,10 +40,27 @@ const WalletConnection = () => {
         const res = await storeWalletAddress(publicKey.toBase58());
         if (res.success) {
           toast.success(res.message);
-        }
 
-        const balance = await connection.getBalance(publicKey);
-        setSolBalance(balance / LAMPORTS_PER_SOL);
+          const balance = await connection.getBalance(publicKey);
+          setSolBalance(balance / LAMPORTS_PER_SOL);
+
+          const data = await getUserInfo(publicKey.toBase58());
+          const userInfo = data.data
+
+          if (userInfo) {
+            setUser({
+              id: userInfo.id,
+              username: userInfo.username || '',
+              email: userInfo.email || '',
+              walletAddress: publicKey.toBase58(),
+              avatar: userInfo.avatar || '',
+              banner: userInfo.banner || '',
+              bio: userInfo.bio || '',
+              isVerified: userInfo.isVerified,
+              solBalance: balance / LAMPORTS_PER_SOL,
+            })
+          }
+        }
       }
     };
     if (publicKey) fetchBalanceAndStoreAddress();
@@ -62,6 +81,11 @@ const WalletConnection = () => {
       toast.success('Address copied to clipboard!');
     }
   };
+
+  const handleDisconnect = () => {
+    disconnect();
+    clearUser();
+  }
 
   return (
     <div>
@@ -129,7 +153,7 @@ const WalletConnection = () => {
             <DropdownMenuItem>
               Balance: {solBalance ? solBalance.toFixed(2) : 'Loading...'} SOL
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={disconnect} className="text-red-500">
+            <DropdownMenuItem onClick={handleDisconnect} className="text-red-500">
               Disconnect
             </DropdownMenuItem>
           </DropdownMenuContent>

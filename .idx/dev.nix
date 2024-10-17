@@ -3,6 +3,7 @@
   packages = [
     pkgs.nodejs_20
     pkgs.bun
+    pkgs.python312
   ];
   idx.extensions = [
     "dsznajder.es7-react-js-snippets"
