@@ -1,4 +1,4 @@
-import 'server-only'
+import 'server-only';
 
 import cloudinary from '@/config/cloudinary';
 

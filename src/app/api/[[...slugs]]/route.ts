@@ -3,7 +3,7 @@ import { swagger } from '@elysiajs/swagger';
 import { eq } from 'drizzle-orm';
 import { db } from '@/db';
 import { users } from '@/db/schema';
-import { uploadFile } from '@/lib/utils-server';
+import { uploadFile } from '@/server/lib/utils';
 
 const app = new Elysia({ prefix: '/api' })
   .use(swagger())
