@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
-import { ThemeProvider } from '@/providers/theme-provider';
 import { siteConfig } from '@/config/site';
 import { fontPrompt, fontSyne } from '@/config/fonts';
-import { AppWalletProvider } from '@/providers/app-wallet-provider';
 import { Toaster } from '@/components/ui/sonner';
+import { ThemeProvider } from '@/providers/theme-provider';
+import { AppWalletProvider } from '@/providers/app-wallet-provider';
+import { QueryProvider } from '@/providers/react-query-provider';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -78,7 +79,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <AppWalletProvider>{children}</AppWalletProvider>
+          <QueryProvider>
+            <AppWalletProvider>{children}</AppWalletProvider>
+          </QueryProvider>
         </ThemeProvider>
         <Toaster />
       </body>
