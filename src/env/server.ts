@@ -7,6 +7,7 @@ export const env = createEnv({
     CLOUDINARY_CLOUD_NAME: z.string(),
     CLOUDINARY_API_KEY: z.string(),
     CLOUDINARY_API_SECRET: z.string(),
+    JWT_SECRET_KEY: z.string(),
   },
   runtimeEnv: process.env,
 });

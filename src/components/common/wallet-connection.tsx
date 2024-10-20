@@ -25,11 +25,21 @@ import {
 import { CopyIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuthStore } from '@/store/user-store';
+import { removeCookieToken } from '@/server/actions/users';
 
 const WalletConnection = () => {
   const [open, setOpen] = useState<boolean>(false);
   const { connection } = useConnection();
-  const { select, wallets, publicKey, disconnect, connected, connecting, signMessage, connect } = useWallet();
+  const {
+    select,
+    wallets,
+    publicKey,
+    disconnect,
+    connected,
+    connecting,
+    signMessage,
+    connect,
+  } = useWallet();
   const { setAuth, clearAuth, isAuthenticated } = useAuthStore();
 
   // Query for fetching SOL balance
@@ -87,13 +97,14 @@ const WalletConnection = () => {
 
       // Wait for the wallet to be connected
       if (!connected) {
-        await connect()
+        await connect();
       }
-      wallet.addListener('connect', ())
       if (publicKey && signMessage) {
         authMutation.mutate();
       } else {
-        throw new Error('Wallet connected but publicKey or signMessage not available');
+        throw new Error(
+          'Wallet connected but publicKey or signMessage not available',
+        );
       }
     } catch (error) {
       console.error('Error connecting wallet:', error);
@@ -108,9 +119,10 @@ const WalletConnection = () => {
     }
   };
 
-  const handleDisconnect = () => {
+  const handleDisconnect = async () => {
     disconnect();
     clearAuth();
+    await removeCookieToken();
     toast.success('Wallet disconnected');
   };
 

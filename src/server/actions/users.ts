@@ -5,6 +5,7 @@ import { userSchema } from '@/lib/validators';
 import { db } from '@/db';
 import { users } from '@/db/schema';
 import { avatarsArray } from '@/constants/avatars';
+import { cookies } from 'next/headers';
 
 export const storeWalletAddress = async (walletAddress: string) => {
   const walletValidation = userSchema.pick({ walletAddress: true });
@@ -77,4 +78,8 @@ export const getUserInfo = async (walletAddress: string) => {
     console.error('error getting user info: ', error);
     throw new Error('An error occurred while fetching user info');
   }
+};
+
+export const removeCookieToken = async () => {
+  cookies().delete('authToken');
 };

@@ -3,7 +3,7 @@
 import React from 'react';
 import { siteConfig } from '@/config/site';
 import { ModeToggle } from '@/components/mode-toggle';
-import WalletConnection from './wallet-connection';
+import WalletConnection from '@/components/common/wallet-connection';
 
 const Navbar = () => {
   return (

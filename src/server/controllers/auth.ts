@@ -14,7 +14,7 @@ export const authController = new Elysia({ prefix: '/auth' })
   )
   .post(
     '/sign',
-    async ({ set, jwt, body }) => {
+    async ({ set, cookie: { authToken }, jwt, body }) => {
       const { publicKey, signature, message } = body;
       console.log(body);
 
@@ -29,6 +29,7 @@ export const authController = new Elysia({ prefix: '/auth' })
           const token = await jwt.sign({ publicKey });
           console.log('token: ', token);
           set.status = 200;
+          authToken.value = token;
           return {
             success: true,
             status: 200,
