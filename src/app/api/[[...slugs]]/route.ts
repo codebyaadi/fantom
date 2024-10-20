@@ -4,10 +4,12 @@ import { eq } from 'drizzle-orm';
 import { db } from '@/db';
 import { users } from '@/db/schema';
 import { uploadFile } from '@/server/lib/utils';
+import { authController } from '@/server/controllers/auth';
 
 const app = new Elysia({ prefix: '/api' })
   .use(swagger())
   .get('/', () => 'hello Next')
+  .use(authController)
   .post(
     '/profile',
     async ({ body }) => {

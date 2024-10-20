@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { getUserInfo } from '@/server/users';
+import { getUserInfo } from '@/server/actions/users';
 import { ProfileForm } from './_components/profile-form';
 import { toast } from 'sonner';
 
