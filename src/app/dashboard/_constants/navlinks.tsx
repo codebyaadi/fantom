@@ -29,7 +29,7 @@ export type NavLink = {
 export const navLinks: NavLink[] = [
   {
     name: 'Dashboard',
-    href: '/dashboard',
+    href: '/dashboard/overview',
     icon: <DashboardIcon />,
   },
   {
@@ -39,43 +39,43 @@ export const navLinks: NavLink[] = [
       {
         name: 'My Works',
         icon: <Pencil1Icon />,
-        href: '/profile',
+        href: '/dashboard/profile',
         subItems: [
           {
             name: 'Manga',
-            href: '/library/works/manga',
+            href: '/dashboard/library/works/manga',
             icon: <ReaderIcon />,
           },
           {
             name: 'Manhwa',
-            href: '/library/works/manhwa',
+            href: '/dashboard/library/works/manhwa',
             icon: <ReaderIcon />,
           },
           {
             name: 'Manhua',
-            href: '/library/works/manhua',
+            href: '/dashboard/library/works/manhua',
             icon: <ReaderIcon />,
           },
         ],
       },
       {
         name: 'Drafts',
-        href: '/library/drafts',
+        href: '/dashboard/library/drafts',
         icon: <BackpackIcon />,
       },
       {
         name: 'Published',
-        href: '/library/published',
+        href: '/dashboard/library/published',
         icon: <LightningBoltIcon />,
       },
       {
         name: 'Favorites',
-        href: '/library/favorites',
+        href: '/dashboard/library/favorites',
         icon: <HeartIcon />,
       },
       {
         name: 'Explore',
-        href: '/library/explore',
+        href: '/dashboard/library/explore',
         icon: <MagnifyingGlassIcon />,
       },
     ],
@@ -86,12 +86,12 @@ export const navLinks: NavLink[] = [
     subItems: [
       {
         name: 'New Series',
-        href: '/upload/new-series',
+        href: '/dashboard/upload/new-series',
         icon: <PlusIcon />,
       },
       {
         name: 'New Chapter',
-        href: '/upload/new-chapter',
+        href: '/dashboard/upload/new-chapter',
         icon: <LayersIcon />,
       },
     ],
@@ -102,34 +102,34 @@ export const navLinks: NavLink[] = [
     subItems: [
       {
         name: 'Create NFT',
-        href: '/nft/create',
+        href: '/dashboard/nft/create',
         icon: <FrameIcon />,
       },
       {
         name: 'My Collections',
-        href: '/nft/collections',
+        href: '/dashboard/nft/collections',
         icon: <ImageIcon />,
       },
       {
         name: 'Marketplace',
-        href: '/nft/marketplace',
+        href: '/dashboard/nft/marketplace',
         icon: <MixIcon />,
       },
     ],
   },
   {
     name: 'Analytics',
-    href: '/analytics',
+    href: '/dashboard/analytics',
     icon: <BarChartIcon />,
   },
   {
     name: 'Profile',
-    href: '/profile',
+    href: '/dashboard/profile',
     icon: <PersonIcon />,
   },
   {
     name: 'Settings',
-    href: '/settings',
+    href: '/dashboard/settings',
     icon: <GearIcon />,
   },
 ];
