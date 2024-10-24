@@ -25,7 +25,7 @@ import {
 import { CopyIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuthStore } from '@/store/user-store';
-import { removeCookieToken } from '@/server/actions/users';
+import { authUserWithSign } from '@/server/actions/users';
 
 const WalletConnection = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -36,7 +36,6 @@ const WalletConnection = () => {
     publicKey,
     disconnect,
     connected,
-    connecting,
     signMessage,
     connect,
   } = useWallet();
@@ -61,23 +60,13 @@ const WalletConnection = () => {
       const message = new TextEncoder().encode(`Auth ${Date.now()}`);
       const signature = await signMessage(message);
 
-      const response = await fetch('/api/auth/sign', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          publicKey: publicKey.toBase58(),
-          signature: Array.from(signature),
-          message: Array.from(message),
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Authentication failed');
-      }
-
-      return response.json();
+      const response = await authUserWithSign(
+        publicKey.toBase58(),
+        Array.from(signature),
+        Array.from(message),
+      );
+      console.log(response)
+      return response;
     },
     onSuccess: (data) => {
       setAuth({ token: data.token });
@@ -122,7 +111,6 @@ const WalletConnection = () => {
   const handleDisconnect = async () => {
     disconnect();
     clearAuth();
-    await removeCookieToken();
     toast.success('Wallet disconnected');
   };
 

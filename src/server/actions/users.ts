@@ -1,85 +1,56 @@
 'use server';
 
-import { z } from 'zod';
-import { userSchema } from '@/lib/validators';
+import nacl from 'tweetnacl';
+import jwt from 'jsonwebtoken';
+import { cookies } from 'next/headers';
+import { PublicKey } from '@solana/web3.js';
 import { db } from '@/db';
 import { users } from '@/db/schema';
-import { avatarsArray } from '@/constants/avatars';
-import { cookies } from 'next/headers';
+import { env } from '@/env/server';
 
-export const storeWalletAddress = async (walletAddress: string) => {
-  const walletValidation = userSchema.pick({ walletAddress: true });
-
+export async function authUserWithSign(
+  publicKey: string,
+  signature: number[],
+  message: number[],
+) {
   try {
-    const parsed = walletValidation.parse({ walletAddress });
+    const verified = nacl.sign.detached.verify(
+      new Uint8Array(message),
+      new Uint8Array(signature),
+      new PublicKey(publicKey).toBytes(),
+    );
 
-    const existingAddress = await db.query.users.findFirst({
-      where: (users, { eq }) => eq(users.walletAddress, parsed.walletAddress),
-    });
+    if (verified) {
+      const token = jwt.sign({ publicKey }, env.JWT_SECRET_KEY);
 
-    if (existingAddress) {
-      console.error('wallet address already exists');
+      const user = await db
+        .insert(users)
+        .values({ walletAddress: publicKey, avatar: '' })
+        .onConflictDoUpdate({
+          target: users.walletAddress,
+          set: { walletAddress: publicKey },
+        })
+        .returning({
+          username: users.username,
+          email: users.email,
+          emailVerified: users.emailVerified,
+          isVerified: users.isVerified,
+          avatar: users.avatar,
+          banner: users.banner,
+          bio: users.bio,
+        });
+
+        cookies().set('token', token, { httpOnly: true, secure: true });
+
       return {
-        success: false,
-        message: 'wallet address already exists',
-        data: parsed.walletAddress,
+        ...user[0],
+        token,
       };
+    } else {
+      throw new Error('Signature verification failed');
     }
-
-    const avatar =
-      avatarsArray[Math.floor(Math.random() * avatarsArray.length)];
-
-    await db.insert(users).values({
-      walletAddress: parsed.walletAddress,
-      avatar: avatar,
-    });
-
-    return {
-      success: true,
-      message: 'wallet address stored successfully',
-      data: parsed.walletAddress,
-    };
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      console.log('validation error:', error.issues);
-      throw new Error('Validation failed');
-    }
-    console.error('error storing wallet address:', error);
-    throw new Error('An error occurred while storing the wallet address');
+    console.error('Error during signMessage:', error);
+    throw new Error('Unable to sign message');
   }
-};
-
-export const getUserInfo = async (walletAddress: string) => {
-  try {
-    if (!walletAddress) {
-      return {
-        success: false,
-        msg: 'wallet address is required',
-      };
-    }
-
-    const user = await db.query.users.findFirst({
-      where: (users, { eq }) => eq(users.walletAddress, walletAddress),
-    });
-
-    if (!user) {
-      return {
-        success: false,
-        msg: 'user not found',
-      };
-    }
-
-    return {
-      success: true,
-      msg: 'user found',
-      data: user,
-    };
-  } catch (error) {
-    console.error('error getting user info: ', error);
-    throw new Error('An error occurred while fetching user info');
-  }
-};
-
-export const removeCookieToken = async () => {
-  cookies().delete('authToken');
-};
+}
