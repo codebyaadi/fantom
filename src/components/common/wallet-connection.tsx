@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
-import { WalletAdapter, WalletName } from '@solana/wallet-adapter-base';
+import { WalletAdapter } from '@solana/wallet-adapter-base';
 import { LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
@@ -65,7 +65,7 @@ const WalletConnection = () => {
         Array.from(signature),
         Array.from(message),
       );
-      console.log(response)
+      console.log(response);
       return response;
     },
     onSuccess: (data) => {

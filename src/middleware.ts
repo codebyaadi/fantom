@@ -1,15 +1,24 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import * as jose from 'jose';
+import { env } from '@/env/server';
 
-export function middleware(request: NextRequest) {
-  const token = request.cookies.get('authToken')?.value;
+export async function middleware(request: NextRequest) {
+  const token = request.cookies.get('token')?.value;
   if (!token) {
     return NextResponse.redirect(new URL('/', request.url));
   }
-  return NextResponse.next();
+
+  try {
+    const secret = new TextEncoder().encode(env.JWT_SECRET_KEY);
+    const decoded = await jose.jwtVerify(token, secret);
+    return NextResponse.next();
+  } catch (error) {
+    console.error('JWT verification failed:', error);
+    return NextResponse.redirect(new URL('/', request.url));
+  }
 }
 
-// See "Matching Paths" below to learn more
 export const config = {
   matcher: '/dashboard',
 };

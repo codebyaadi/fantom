@@ -1,7 +1,7 @@
 'use server';
 
 import nacl from 'tweetnacl';
-import jwt from 'jsonwebtoken';
+import * as jose from 'jose';
 import { cookies } from 'next/headers';
 import { PublicKey } from '@solana/web3.js';
 import { db } from '@/db';
@@ -20,8 +20,13 @@ export async function authUserWithSign(
       new PublicKey(publicKey).toBytes(),
     );
 
+    const secret = new TextEncoder().encode(env.JWT_SECRET_KEY);
+
     if (verified) {
-      const token = jwt.sign({ publicKey }, env.JWT_SECRET_KEY);
+      const token = await new jose.SignJWT({ publicKey })
+        .setProtectedHeader({ alg: 'HS256' })
+        .setExpirationTime('1d')
+        .sign(secret);
 
       const user = await db
         .insert(users)
@@ -40,7 +45,7 @@ export async function authUserWithSign(
           bio: users.bio,
         });
 
-        cookies().set('token', token, { httpOnly: true, secure: true });
+      cookies().set('token', token, { httpOnly: true, secure: true });
 
       return {
         ...user[0],
