@@ -7,6 +7,7 @@ import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from '@/providers/theme-provider';
 import { AppWalletProvider } from '@/providers/app-wallet-provider';
 import { QueryProvider } from '@/providers/react-query-provider';
+import '@solana/wallet-adapter-react-ui/styles.css';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',

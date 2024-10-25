@@ -16,8 +16,6 @@ import {
   TrustWalletAdapter,
 } from '@solana/wallet-adapter-wallets';
 
-require('@solana/wallet-adapter-react-ui/styles.css');
-
 export function AppWalletProvider({ children }: { children: React.ReactNode }) {
   const network = WalletAdapterNetwork.Devnet;
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);

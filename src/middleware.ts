@@ -1,17 +1,16 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import * as jose from 'jose';
-import { env } from '@/env/server';
+import { decrypt } from './server/lib/session';
 
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get('token')?.value;
+
   if (!token) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
   try {
-    const secret = new TextEncoder().encode(env.JWT_SECRET_KEY);
-    const decoded = await jose.jwtVerify(token, secret);
+    const decoded = await decrypt(token);
     return NextResponse.next();
   } catch (error) {
     console.error('JWT verification failed:', error);
@@ -20,5 +19,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: '/dashboard',
+  matcher: ['/dashboard/:path*'],
 };

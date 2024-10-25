@@ -111,6 +111,7 @@ const WalletConnection = () => {
   const handleDisconnect = async () => {
     disconnect();
     clearAuth();
+    await logout();
     toast.success('Wallet disconnected');
   };
 

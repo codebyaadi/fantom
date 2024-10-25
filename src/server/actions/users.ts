@@ -1,12 +1,12 @@
 'use server';
 
 import nacl from 'tweetnacl';
-import * as jose from 'jose';
 import { cookies } from 'next/headers';
 import { PublicKey } from '@solana/web3.js';
 import { db } from '@/db';
 import { users } from '@/db/schema';
-import { env } from '@/env/server';
+import { deleteSession, encrypt } from '@/server/lib/session';
+import { redirect } from 'next/navigation';
 
 export async function authUserWithSign(
   publicKey: string,
@@ -20,13 +20,9 @@ export async function authUserWithSign(
       new PublicKey(publicKey).toBytes(),
     );
 
-    const secret = new TextEncoder().encode(env.JWT_SECRET_KEY);
-
     if (verified) {
-      const token = await new jose.SignJWT({ publicKey })
-        .setProtectedHeader({ alg: 'HS256' })
-        .setExpirationTime('1d')
-        .sign(secret);
+      const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+      const token = await encrypt({ publicKey });
 
       const user = await db
         .insert(users)
@@ -45,7 +41,13 @@ export async function authUserWithSign(
           bio: users.bio,
         });
 
-      cookies().set('token', token, { httpOnly: true, secure: true });
+      (await cookies()).set('token', token, {
+        httpOnly: true,
+        secure: true,
+        expires: expiresAt,
+        sameSite: 'lax',
+        path: '/',
+      });
 
       return {
         ...user[0],
@@ -58,4 +60,9 @@ export async function authUserWithSign(
     console.error('Error during signMessage:', error);
     throw new Error('Unable to sign message');
   }
+}
+
+export async function logout() {
+  await deleteSession();
+  redirect('/');
 }
