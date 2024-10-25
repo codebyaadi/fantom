@@ -4,6 +4,7 @@
     pkgs.nodejs_20
     pkgs.bun
     pkgs.python312
+    pkgs.gnumake
   ];
   idx.extensions = [
     "dsznajder.es7-react-js-snippets"
