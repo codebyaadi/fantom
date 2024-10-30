@@ -5,8 +5,11 @@ import { cookies } from 'next/headers';
 import { PublicKey } from '@solana/web3.js';
 import { db } from '@/db';
 import { users } from '@/db/schema';
-import { deleteSession, encrypt } from '@/server/lib/session';
+import { deleteSession, encrypt, getSession } from '@/server/lib/session';
 import { redirect } from 'next/navigation';
+import { eq } from 'drizzle-orm';
+import { revalidateTag } from 'next/cache';
+import { uploadFile } from '../lib/utils';
 
 export async function authUserWithSign(
   publicKey: string,
@@ -65,4 +68,33 @@ export async function authUserWithSign(
 export async function logout() {
   await deleteSession();
   redirect('/');
+}
+
+export async function updateUserInfo(formData: FormData) {
+  const session = await getSession();
+  const username = formData.get('username') as string;
+  const email = formData.get('email') as string;
+  const bio = formData.get('bio') as string;
+
+  const avatarFile = formData.get('avatar') as File;
+  const bannerFile = formData.get('banner') as File;
+
+  let avatarUrl: string | undefined;
+  if (avatarFile) {
+    avatarUrl = await uploadFile(avatarFile);
+  }
+
+  let bannerUrl: string | undefined;
+  if (bannerFile) {
+    bannerUrl = await uploadFile(bannerFile);
+  }
+
+  if (!session) return null;
+
+  await db
+    .update(users)
+    .set({ username, email, bio, avatar: avatarUrl, banner: bannerUrl })
+    .where(eq(users.walletAddress, session?.publicKey));
+
+  revalidateTag('profile');
 }

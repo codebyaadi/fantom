@@ -25,7 +25,7 @@ import {
 import { CopyIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuthStore } from '@/store/user-store';
-import { authUserWithSign } from '@/server/actions/users';
+import { authUserWithSign, logout } from '@/server/actions/users';
 
 const WalletConnection = () => {
   const [open, setOpen] = useState<boolean>(false);

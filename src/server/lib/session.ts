@@ -24,7 +24,7 @@ export async function decrypt(session: string | undefined = '') {
     const { payload } = await jwtVerify(session, encodedKey, {
       algorithms: ['HS256'],
     });
-    return payload;
+    return payload as SessionPayload;
   } catch (error) {
     console.log('Failed to verify session');
   }
@@ -32,4 +32,11 @@ export async function decrypt(session: string | undefined = '') {
 
 export async function deleteSession() {
   (await cookies()).delete('token');
+}
+
+export async function getSession() {
+  const token = (await cookies()).get('token')?.value;
+  const session = await decrypt(token);
+
+  return session;
 }
